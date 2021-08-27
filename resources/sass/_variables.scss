@@ -1,0 +1,18 @@
+$light: #EDEDED;
+$dark: #111111;
+$dark-gray: #171717;
+$gray: #313131;
+$light-gray: #414141;
+$lighter-gray: #525252;
+$red: #CA3E47;
+$purple: #2B2E4A;
+$maroon: #903749;
+
+$transition-duration-fast: 100ms;
+$transition-duration-normal: 150ms;
+$transition-duration-slow: 250ms;
+$transition-method: ease-in-out;
+
+$transition-fast: $transition-duration-fast $transition-method;
+$transition-normal: $transition-duration-normal $transition-method;
+$transition-slow: $transition-duration-slow $transition-method;

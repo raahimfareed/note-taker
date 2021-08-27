@@ -1,0 +1,72 @@
+section {
+    &.guest {
+        &.banner {
+            height: 70vh;
+            min-height: 390px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: $gray;
+
+            &.auth {
+                min-height: 700px;
+
+                button[type="submit"] {
+                    background-color: $purple;
+                    color: $light;
+                    width: 70%;
+                }
+            }
+        }
+        
+        &.about {
+            background-color: $light;
+        }
+    }
+}
+
+
+.index-action-btns {
+    .signup-btn {
+        background-color: $light;
+        color: $dark;
+    }
+
+    .login-btn {
+        background-color: $purple;
+        color: $light;
+    }
+
+    .btn {
+        max-width: 400px;
+        width: 70%;
+        opacity: 1;
+        transition: opacity $transition-normal;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}
+
+@media only screen and (min-width: 768px)
+{
+    section {
+        &.guest {
+            &.banner {
+                &.register {
+                    button[type="submit"] {
+                        width: 40%;
+                    }
+                }
+            }
+        }
+    }
+
+    .index-action-btns {
+        .btn {
+            width: 40%;
+        }
+    }
+}
+

@@ -1,0 +1,38 @@
+.nav-dark {
+    background-color: $dark;
+    color: $light;
+
+    .navbar-brand, .nav-link {
+        color: $light;
+        transition: color $transition-fast;
+
+        &.active {
+            color: $lighter-gray;
+            pointer-events: none;
+        }
+
+        &:hover {
+            color: $lighter-gray;
+        }
+    }
+
+    .nav-link {
+        &.signup-btn {
+            background-color: $purple;
+            color: $light;
+            border-radius: 5px;
+            transition: color $transition-fast, background-color $transition-fast;
+
+            &:hover {
+                background-color: $light;
+                color: $dark;
+            }
+            
+            &.active {
+                background-color: $light;
+                color: $dark;
+                pointer-events: none;
+            }
+        }
+    }
+}
