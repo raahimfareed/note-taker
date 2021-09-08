@@ -28,7 +28,7 @@ class RegisterController extends Controller
             "name" => ["nullable", "max:255"],
             "username" => ["required", "max:255", "unique:users"],
             "email" => ["required", "email", "max:255", "unique:users"],
-            "password" => ["required", "confirmed", Password::min(8)->mixedCase()->numbers()]
+            "password" => ["required", "confirmed", Password::min(8)->letters()->numbers()]
         ]);
 
         if (!isset($request->name) || $request->name === null || $request->name == '')

@@ -1,0 +1,51 @@
+#settings {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+    main {
+        flex: 1 0 auto;
+        color: $light;
+        font-size: 0.9rem;
+    }
+
+    nav.sidebar {
+        background-color: $dark-gray;
+        border-radius: 5px;
+        padding: 10px;
+
+        .nav-link {
+            color: $lighter-gray;
+            transition: color $transition-fast;
+            &.active {
+                color: $light;
+                font-weight: bold;
+            }
+
+            &:hover {
+                color: $light;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            overflow: hidden;
+            border: 1px solid $lighter-gray;
+            width: 90%;
+            margin: 0.25rem 0;
+            // border-color: $light-gray;
+            background-color: $light-gray;
+        }
+    }
+
+    section {
+        background-color: $dark-gray;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+    
+    footer {
+        background-color: $dark-gray;
+        color: $light;
+    }
+}

@@ -1,0 +1,105 @@
+#main-body {
+    height: calc(100vh - 56px);
+    min-height: 100%;
+    background-color: $dark-gray;
+    
+    .sidebar {
+        height: calc(100vh - 56px);
+        overflow: hidden auto;
+    }
+
+    #newNoteButton::after {
+        content: none;
+    }
+
+    .notes-list-item {
+        padding: 1rem;
+        background-color: $gray;
+        color: $light;
+        border-bottom: 1px solid $dark-gray;
+        transition: background-color $transition-fast;
+
+        &:hover {
+            background-color: $light-gray;
+        }
+
+        &.active {
+            background-color: $dark;
+            border-color: inherit;
+        }
+
+        &.delete {
+            // FIXME: Height 0 not working
+            transition: opacity $transition-slow;
+            opacity: 0;
+            
+            &.hidden {
+                padding: 0px !important;
+                overflow: hidden;
+                display: block;
+                height: 0;
+                transition: height $transition-slow, padding-top $transition-fast, padding-bottom $transition-fast;
+                transition-delay: 1ms;
+            }
+        }
+    }
+    
+    #editor {
+        height: calc(100vh - 56px);
+        overflow: hidden;
+    }
+    
+    #markdown-preview {
+        display: block;
+        height: calc(100vh - 56px);
+        overflow: auto;
+
+        .title {
+            input, span {
+                outline: none;
+                border: none;
+                border-radius: 5px;
+                background-color: transparent;
+                font-size: 2.75rem;
+                text-decoration: underline;
+            }
+
+            input {
+                padding: 0px 10px 5px;
+                transition: background-color $transition-normal;
+
+                &:not([disabled]):hover, &:not([disabled]):focus, &:not([disabled]):active {
+                    background-color: $dark;
+                }
+            }
+        }
+
+        .content {
+            width: auto;
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+            code {
+                font-family: 'JetBrains Mono', 'Droid Sans Mono', monospace, 'Droid Sans Fallback';
+            }
+        }
+    }
+}
+
+@media only print {
+    #markdown-preview {
+        width: auto;
+        height: auto;
+        overflow: visible !important;
+        display: block;
+        font-size: 11pt;
+    }
+}
+
+.toast {
+    width: fit-content;
+    position: absolute;
+    top: 60px;
+    right: 5px;
+}
