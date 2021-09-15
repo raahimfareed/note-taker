@@ -11556,3 +11556,9 @@ section.guest.about {
   background-color: #171717;
   color: #EDEDED;
 }
+#settings .qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

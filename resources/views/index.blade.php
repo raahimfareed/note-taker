@@ -3,7 +3,7 @@
 @section("head")
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 @endsection
 
 @section("main")
@@ -66,12 +66,32 @@
     </div>
 </div>
 <div id="context-menu" class="text-light">
-    <div class="item">
+    <div class="item share">
         <span class="fa fa-share-alt"></span> Share
     </div>
     <hr>
     <div class="item text-danger delete">
         <span class="fa fa-trash-o"></span> Delete
+    </div>
+</div>
+<div class="modal fade" id="shareModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share your note!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><span class="fa fa-share-alt"></span></span>
+                    <input type="text" class="form-control" id="shareLinkInput" placeholder="Copy Link" onclick="copyToClipboard()" readonly="readonly">
+                    <span class="input-group-text cursor-pointer" onclick="copyToClipboard()"><i class="fa fa-files-o" aria-hidden="true"></i></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -558,8 +578,6 @@
             let toast = window.Bootstrap.Toast.getInstance(toastEl);
             toast.show();
 
-            
-
             // FIXME: Smooth delete animation not working properly
             // let addHidden = setTimeout(() => {
             //     noteLink.classList.add("hidden");
@@ -568,8 +586,6 @@
             // setTimeout(() => {
             //     noteLink.parentElement.removeChild(noteLink);
             // }, 1000);
-
-            return;
         }
 
         if (window.editor.note_token === token) {
@@ -579,6 +595,49 @@
         }
     }
 
+
+    // To share the note
+    contextMenu.querySelector(".share").onmousedown = async (e) => {
+        const token = document.head.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        let note_token = contextMenu.dataset.token;
+        let response = await fetch("{{ route('note.share') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "Application/json",
+                "X-CSRF-TOKEN": token
+            },
+            body: JSON.stringify({
+                "note_token": note_token
+            })
+        });
+
+        if (response.status === 404) {
+            let toastEl = document.querySelector(".toast[data-toast-type='static']");
+            toastEl
+                .querySelector(".toast-body")
+                .textContent = "Note not found";
+            if (toastEl.classList.contains("bg-success")) {
+                toastEl.classList.remove("bg-success");
+            }
+            toastEl.classList.add("bg-danger");
+            let toast = window.Bootstrap.Toast.getInstance(toastEl);
+            toast.show();
+            return;
+        }
+
+        if (response.status === 200) {
+            let copyText = document.getElementById("shareLinkInput");
+
+            let result = await response.json();
+
+            copyText.value = result["link"];
+
+            let myModal = new window.Bootstrap.Modal(document.getElementById('shareModal'), {});
+            myModal.toggle();
+
+            return;
+        }
+    }
 
     contextMenu.oncontextmenu = (e) => {
         e.preventDefault();
@@ -714,6 +773,31 @@
     function closeCtxMenu() {
         contextMenu.dataset.token = null;
         contextMenu.classList.remove("active");
+    }
+
+
+
+    function copyToClipboard() {
+        let copyText = document.getElementById("shareLinkInput");
+
+        // Select input field
+        copyText.select();
+
+        // For Mobiles
+        copyText.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(copyText.value);
+
+        let toastEl = document.querySelector(".toast[data-toast-type='static']");
+        toastEl
+            .querySelector(".toast-body")
+            .textContent = "Copied to Clipboard";
+        if (toastEl.classList.contains("bg-danger")) {
+            toastEl.classList.remove("bg-danger");
+        }
+        toastEl.classList.add("bg-success");
+        let toast = window.Bootstrap.Toast.getInstance(toastEl);
+        toast.show();
     }
 </script>
 @endsection

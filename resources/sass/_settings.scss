@@ -48,4 +48,11 @@
         background-color: $dark-gray;
         color: $light;
     }
+
+    .qr {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 }

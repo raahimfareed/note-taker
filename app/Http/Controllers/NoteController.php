@@ -74,6 +74,18 @@ class NoteController extends Controller
         return response()->json(["title" => $note->title, "body" => $note->body, "note_token" => $request->note_token], 200);
     }
 
+    public function get_shared(Request $request)
+    {
+        // $note = Note::find(Crypt::decrypt($request->note_token));
+        $note = $request->user()->notes()->find(Crypt::decrypt($request->note_token));
+        if ($note === null)
+        {
+            return response()->json([], 404);
+        }
+
+        return response()->json(["title" => $note->title, "body" => $note->body, "note_token" => $request->note_token], 200);
+    }
+
     public function destroy(Request $request)
     {
         $note = $request->user()->notes()->find(Crypt::decrypt($request->note_token));
@@ -85,5 +97,22 @@ class NoteController extends Controller
 
         $note->delete();
         return response()->json([], 204);
+    }
+
+    public function share(Request $request)
+    {
+        $note = $request->user()->notes()->find(Crypt::decrypt($request->note_token));
+        if ($note === null)
+        {
+            return response()->json([], 404);
+        }
+
+        if ($note->share_token === null)
+        {
+            $note->share_token = Str::uuid()->getHex();
+            $note->save();
+        }
+
+        return response()->json(["link" => route("note.share.index", [auth()->user()->username, $note])], 200);
     }
 }
